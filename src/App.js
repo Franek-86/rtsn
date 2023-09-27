@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+// import "leaflet/dist/leaflet.css";
+import "../node_modules/leaflet/dist/leaflet.css";
+import Map from "./Map";
+import Loading from "./Loading";
+import Questions from "./Questions";
+import Modal from "./Modal";
+import Start from "./Start";
+import End from "./End";
+import { useGlobalContext } from "./context";
 
 function App() {
+  const { isModalOpen, waiting, loading, start, end, locationIndex, test } =
+    useGlobalContext();
+
+  if (loading) {
+    return <Loading />;
+  }
+  if (start && locationIndex === 0) {
+    return <Start />;
+  }
+  if (end) {
+    return (
+      <section className='map-section'>
+        <Map />
+        <End />
+      </section>
+    );
+  }
+  if (waiting) {
+    return (
+      <section className='map-section'>
+        <Map />
+        <Modal />
+      </section>
+    );
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className='map-section'>
+      <Map />
+      <Questions />
+    </section>
   );
 }
 
